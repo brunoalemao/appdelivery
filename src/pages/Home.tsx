@@ -79,8 +79,8 @@ export default function Home() {
                   key={i}
                   className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 transform hover:scale-105"
                 >
-                  <div className="h-40 sm:h-48 md:h-56 lg:h-64 overflow-hidden">
-                    <div className="w-full h-full bg-gray-200 animate-pulse" />
+                  <div className="relative h-40 sm:h-48 md:h-56 lg:h-64">
+                    <div className="w-full h-full bg-gray-200 animate-pulse absolute inset-0" />
                   </div>
                   <div className="p-2 sm:p-3 md:p-4">
                     <div className="h-4 w-24 bg-gray-200 rounded mb-2 animate-pulse" />
@@ -139,11 +139,11 @@ export default function Home() {
                   onClick={() => navigate(`/product/${product.id}`)}
                   className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 transform hover:scale-105"
                 >
-                  <div className="h-40 sm:h-48 md:h-56 lg:h-64 overflow-hidden">
+                  <div className="relative h-40 sm:h-48 md:h-56 lg:h-64">
                     <img 
                       src={product.imagem_url} 
                       alt={product.nome}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover absolute inset-0"
                     />
                   </div>
                   <div className="p-3">
