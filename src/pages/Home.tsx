@@ -142,7 +142,15 @@ const Home: React.FC = () => {
               WebkitOverflowScrolling: 'touch',
               scrollbarWidth: 'none',
               msOverflowStyle: 'none'
-            }}>
+            }}
+              onScroll={(e) => {
+                const element = e.currentTarget;
+                if (element.scrollLeft + element.clientWidth >= element.scrollWidth - 10) {
+                  element.scrollLeft = 0;
+                } else if (element.scrollLeft <= 0) {
+                  element.scrollLeft = element.scrollWidth - element.clientWidth;
+                }
+              }}>
               {featuredProducts.map(product => (
                 <div
                   key={product.id}
