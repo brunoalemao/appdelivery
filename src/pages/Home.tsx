@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -37,29 +37,48 @@ const Home: React.FC = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      console.log('Iniciando busca de dados...');
       
       // Buscar categorias
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('categorias')
-        .select('*')
+        .select('id, nome, imagem_url')
         .order('ordem');
       
-      if (categoriesError) throw categoriesError;
+      if (categoriesError) {
+        console.error('Erro ao buscar categorias:', categoriesError);
+        throw categoriesError;
+      }
+      console.log('Categorias encontradas:', categoriesData?.length);
       
       // Buscar produtos em destaque
       const { data: productsData, error: productsError } = await supabase
         .from('produtos')
-        .select('*')
+        .select('id, nome, descricao, preco, imagem_url')
         .eq('destaque', true)
         .eq('disponivel', true)
         .limit(5);
       
-      if (productsError) throw productsError;
+      if (productsError) {
+        console.error('Erro ao buscar produtos:', productsError);
+        throw productsError;
+      }
+      console.log('Produtos encontrados:', productsData?.length);
       
-      setCategories(categoriesData || []);
-      setFeaturedProducts(productsData || []);
+      // Processando os dados
+      if (categoriesData) {
+        setCategories(categoriesData);
+      }
+      
+      if (productsData) {
+        setFeaturedProducts(productsData);
+      }
     } catch (error) {
-      console.error('Erro ao buscar dados:', error);
+      console.error('Erro detalhado:', error);
+      if (error instanceof Error) {
+        console.error('Mensagem de erro:', error.message);
+        console.error('Stack trace:', error.stack);
+      }
     } finally {
       setLoading(false);
     }
@@ -67,17 +86,15 @@ const Home: React.FC = () => {
   
   return (
     <Layout>
-      <div className="pb-16 px-2 sm:px-4 md:px-6 lg:px-8">
+      <div className="pb-16 px-4 sm:px-6 md:px-8">
         {/* Header com saudação */}
         <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+          <div
+            className="opacity-100 transform translate-y-0"
           >
             <h1 className="text-2xl font-bold mb-2">Hummm!</h1>
             <p className="text-white/90">Qual vai ser a boa de hoje?</p>
-          </motion.div>
+          </div>
         </div>
         
         {/* Categorias */}
@@ -96,17 +113,14 @@ const Home: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="flex space-x-4 overflow-x-auto pb-2" style={{ minWidth: 'max-content' }}>
-              {categories.map((category, index) => (
-                <motion.div
+            <div className="flex space-x-2 overflow-x-auto pb-2 sm:space-x-4" style={{ minWidth: 'max-content' }}>
+              {categories.map(category => (
+                <div
                   key={category.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
                   onClick={() => navigate(`/category/${category.id}`)}
-                  className="flex flex-col items-center w-20 flex-shrink-0 cursor-pointer group sm:w-24"
+                  className="flex flex-col items-center w-20 flex-shrink-0 cursor-pointer group sm:w-24 md:w-32 transition-transform duration-200 hover:scale-105"
                 >
-                  <div className="h-20 w-20 rounded-full overflow-hidden flex items-center justify-center mb-2 border-2 border-gray-200 group-hover:border-primary transition-all duration-200"
+                  <div className="h-20 w-20 rounded-full overflow-hidden flex items-center justify-center mb-2 border-2 border-gray-200 group-hover:border-primary transition-all duration-200 md:h-24 md:w-24"
                         style={{ backgroundColor: 'var(--cor-primaria)' }}>
                     <img
                       src={category.imagem_url}
@@ -114,10 +128,10 @@ const Home: React.FC = () => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="text-xs text-center font-semibold text-gray-800 truncate w-full">
+                  <span className="text-xs text-center font-semibold text-gray-800 truncate w-full md:text-sm">
                     {category.nome}
                   </span>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}
@@ -129,17 +143,14 @@ const Home: React.FC = () => {
             <h2 className="text-xl font-bold text-gray-800 mb-4">Queridinhos da galera</h2>
             
             <div className="overflow-x-auto pb-4">
-              <div className="flex items-center justify-center space-x-1 overflow-x-auto pb-2 sm:space-x-2 md:space-x-3 lg:space-x-4" style={{ minWidth: 'max-content' }}>
-                {featuredProducts.map((product, index) => (
-                  <motion.div
+              <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2 sm:space-x-3 md:space-x-4" style={{ minWidth: 'max-content' }}>
+                {featuredProducts.map(product => (
+                  <div
                     key={product.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
                     onClick={() => navigate(`/product/${product.id}`)}
-                    className="bg-white rounded-lg shadow-md overflow-hidden w-36 max-w-sm cursor-pointer hover:shadow-lg transition-all duration-200 sm:w-48"
+                    className="bg-white rounded-lg shadow-md overflow-hidden w-36 max-w-sm cursor-pointer hover:shadow-lg transition-all duration-200 sm:w-48 md:w-56 transform hover:scale-105"
                   >
-                    <div className="h-28 overflow-hidden">
+                    <div className="h-28 overflow-hidden md:h-32">
                       <img 
                         src={product.imagem_url} 
                         alt={product.nome}
@@ -148,12 +159,12 @@ const Home: React.FC = () => {
                     </div>
                     <div className="p-2">
                       <h3 className="font-semibold text-gray-800 truncate">{product.nome}</h3>
-                      <p className="text-sm text-gray-500 h-10 overflow-hidden">{product.descricao}</p>
+                      <p className="text-sm text-gray-500 h-10 overflow-hidden md:text-base md:h-12">{product.descricao}</p>
                       <p className="text-red-600 font-bold mt-2">
                         R$ {product.preco.toFixed(2).replace('.', ',')}
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
