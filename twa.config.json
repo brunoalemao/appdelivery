@@ -1,0 +1,24 @@
+{
+  "name": "Bolt SB1",
+  "startUrl": "/",
+  "displayMode": "standalone",
+  "themeColor": "#ffffff",
+  "backgroundColor": "#ffffff",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [],
+  "version": "1.0.0",
+  "android": {
+    "packageId": "com.bolt.sb1",
+    "versionCode": 1,
+    "minSdkVersion": 21,
+    "targetSdkVersion": 33,
+    "applicationId": "com.bolt.sb1",
+    "versionName": "1.0.0"
+  }
+}
