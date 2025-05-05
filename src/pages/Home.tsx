@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
 import { useLayout } from '../contexts/LayoutContext';
 import Layout from '../components/Layout';
 
@@ -25,7 +23,6 @@ const Home: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const { userProfile } = useAuth();
   const navigate = useNavigate();
   const { setPageTitle } = useLayout();
   
@@ -86,7 +83,7 @@ const Home: React.FC = () => {
   
   return (
     <Layout>
-      <div className="pb-16 px-4 sm:px-6 md:px-8">
+      <div className="pb-16 px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Header com saudação */}
         <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6">
           <div
@@ -113,14 +110,14 @@ const Home: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="flex space-x-2 overflow-x-auto pb-2 sm:space-x-4" style={{ minWidth: 'max-content' }}>
+            <div className="flex flex-wrap justify-center gap-4 p-4">
               {categories.map(category => (
                 <div
                   key={category.id}
                   onClick={() => navigate(`/category/${category.id}`)}
-                  className="flex flex-col items-center w-20 flex-shrink-0 cursor-pointer group sm:w-24 md:w-32 transition-transform duration-200 hover:scale-105"
+                  className="flex flex-col items-center w-24 cursor-pointer group sm:w-28 md:w-32 lg:w-36 transition-transform duration-200 hover:scale-105"
                 >
-                  <div className="h-20 w-20 rounded-full overflow-hidden flex items-center justify-center mb-2 border-2 border-gray-200 group-hover:border-primary transition-all duration-200 md:h-24 md:w-24"
+                  <div className="h-24 w-24 rounded-full overflow-hidden flex items-center justify-center mb-2 border-2 border-gray-200 group-hover:border-primary transition-all duration-200 md:h-28 md:w-28"
                         style={{ backgroundColor: 'var(--cor-primaria)' }}>
                     <img
                       src={category.imagem_url}
@@ -128,7 +125,7 @@ const Home: React.FC = () => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="text-xs text-center font-semibold text-gray-800 truncate w-full md:text-sm">
+                  <span className="text-xs text-center font-semibold text-gray-800 truncate w-full md:text-base">
                     {category.nome}
                   </span>
                 </div>
@@ -141,32 +138,35 @@ const Home: React.FC = () => {
         {featuredProducts.length > 0 && (
           <div className="px-4 py-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Queridinhos da galera</h2>
-            
-            <div className="overflow-x-auto pb-4">
-              <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2 sm:space-x-3 md:space-x-4" style={{ minWidth: 'max-content' }}>
-                {featuredProducts.map(product => (
-                  <div
-                    key={product.id}
-                    onClick={() => navigate(`/product/${product.id}`)}
-                    className="bg-white rounded-lg shadow-md overflow-hidden w-36 max-w-sm cursor-pointer hover:shadow-lg transition-all duration-200 sm:w-48 md:w-56 transform hover:scale-105"
-                  >
-                    <div className="h-28 overflow-hidden md:h-32">
-                      <img 
-                        src={product.imagem_url} 
-                        alt={product.nome}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="p-2">
-                      <h3 className="font-semibold text-gray-800 truncate">{product.nome}</h3>
-                      <p className="text-sm text-gray-500 h-10 overflow-hidden md:text-base md:h-12">{product.descricao}</p>
-                      <p className="text-red-600 font-bold mt-2">
-                        R$ {product.preco.toFixed(2).replace('.', ',')}
-                      </p>
-                    </div>
+            <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2 sm:space-x-3 md:space-x-4 lg:space-x-6 -mx-2 pl-2 pr-4 sm:pl-3 sm:pr-5 md:pl-4 md:pr-6 lg:pl-5 lg:pr-7" style={{
+              WebkitOverflowScrolling: 'touch',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              scrollSnapType: 'x mandatory'
+            }}>
+              {featuredProducts.map(product => (
+                <div
+                  key={product.id}
+                  onClick={() => navigate(`/product/${product.id}`)}
+                  className="bg-white rounded-lg shadow-md overflow-hidden w-36 max-w-sm cursor-pointer hover:shadow-lg transition-all duration-200 sm:w-44 md:w-52 lg:w-60 transform hover:scale-105"
+                >
+                  <div className="h-32 overflow-hidden md:h-36 lg:h-40">
+                    <img 
+                      src={product.imagem_url} 
+                      alt={product.nome}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                ))}
-              </div>
+                  <div className="p-2 sm:p-3 md:p-4">
+                    <h3 className="font-semibold text-gray-800 truncate">{product.nome}</h3>
+                    <p className="text-sm text-gray-500 h-12 overflow-hidden sm:text-base sm:h-14 md:text-lg md:h-16">{product.descricao}</p>
+                    <p className="text-red-600 font-bold mt-2">
+                      R$ {product.preco.toFixed(2).replace('.', ',')}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

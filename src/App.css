@@ -1,0 +1,17 @@
+/* Melhorando a rolagem em dispositivos móveis */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ativando o scroll suave em dispositivos móveis */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+/* Estilo para os itens que podem ser rolados */
+.scroll-item {
+  scroll-snap-align: start;
+  min-width: 200px;
+  margin-right: 16px;
+}
