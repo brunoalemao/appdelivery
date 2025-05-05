@@ -139,7 +139,9 @@ const Home: React.FC = () => {
           <div className="px-4 py-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Queridinhos da galera</h2>
             <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2 sm:space-x-3 md:space-x-4 lg:space-x-6 -mx-2 pl-2 pr-4 sm:pl-3 sm:pr-5 md:pl-4 md:pr-6 lg:pl-5 lg:pr-7" style={{
-              WebkitOverflowScrolling: 'touch'
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
             }}>
               {featuredProducts.map(product => (
                 <div
