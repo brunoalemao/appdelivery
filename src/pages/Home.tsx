@@ -110,12 +110,12 @@ const Home: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="flex flex-wrap justify-center gap-4 p-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 max-w-7xl mx-auto">
               {categories.map(category => (
                 <div
                   key={category.id}
                   onClick={() => navigate(`/category/${category.id}`)}
-                  className="flex flex-col items-center w-24 cursor-pointer group sm:w-28 md:w-32 lg:w-36 transition-transform duration-200 hover:scale-105"
+                  className="flex flex-col items-center cursor-pointer group transition-transform duration-200 hover:scale-105"
                 >
                   <div className="h-24 w-24 rounded-full overflow-hidden flex items-center justify-center mb-2 border-2 border-gray-200 group-hover:border-primary transition-all duration-200 md:h-28 md:w-28"
                         style={{ backgroundColor: 'var(--cor-primaria)' }}>
