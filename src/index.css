@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cor-primaria: #ff0000;
+  --cor-secundaria: #ffffff;
+}
+
+.bg-primary {
+  background-color: var(--cor-primaria) !important;
+}
+.text-primary {
+  color: var(--cor-primaria) !important;
+}
+.bg-secondary {
+  background-color: var(--cor-secundaria) !important;
+}
+.text-secondary {
+  color: var(--cor-secundaria) !important;
+}
